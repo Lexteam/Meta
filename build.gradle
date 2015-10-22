@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+
+    id 'eclipse'
+    id 'idea'
+}
+apply plugin: 'com.github.hierynomus.license'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+group = 'uk.jamierocks'
+version = '1.0-SNAPSHOT'
+description = "Meta API - like Sponge's Data API."
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+}
+
+license {
+    header file('HEADER.txt')
+    include '**/*.java'
+    include '**/*.groovy'
+
+    strictCheck true
+    mapping {
+        java = 'SLASHSTAR_STYLE'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.8'
+}
