@@ -23,10 +23,10 @@
  */
 package uk.jamierocks.meta.api;
 
-import uk.jamierocks.lexteam.ygd.core.meta.key.Key;
-import uk.jamierocks.lexteam.ygd.core.meta.manipulator.MetaManipulator;
-import uk.jamierocks.lexteam.ygd.core.meta.value.Value;
-import uk.jamierocks.lexteam.ygd.core.meta.value.ValueManager;
+import uk.jamierocks.meta.api.key.Key;
+import uk.jamierocks.meta.api.manipulator.MetaManipulator;
+import uk.jamierocks.meta.api.value.Value;
+import uk.jamierocks.meta.api.value.ValueManager;
 
 import java.util.Optional;
 
