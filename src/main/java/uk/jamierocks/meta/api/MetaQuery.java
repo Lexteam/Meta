@@ -36,9 +36,7 @@ public class MetaQuery {
         this.name = name;
     }
 
-    public static MetaQuery of(String name) {
-        return new MetaQuery(name);
-    }
+    public static MetaQuery of(String name) {return new MetaQuery(name);}
 
     public String getName() {
         return name;
