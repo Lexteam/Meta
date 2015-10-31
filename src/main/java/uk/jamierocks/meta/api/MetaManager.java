@@ -36,15 +36,15 @@ public class MetaManager {
         processors.put(processor.getMetaType(), processor);
     }
 
-    public static <T> T get(MetaOwner container, Class<T> key) {
+    public static <T> T get(MetaHolder container, Class<T> key) {
         return (T) processors.get(key).getMetaFromContainer(container).get();
     }
 
-    public static <T> boolean supports(MetaOwner container, Class<T> key) {
+    public static <T> boolean supports(MetaHolder container, Class<T> key) {
         return processors.get(key).supports(container);
     }
 
-    public static <T extends MetaManipulator> boolean apply(MetaOwner container, T manipulator) {
+    public static <T extends MetaManipulator> boolean apply(MetaHolder container, T manipulator) {
         return processors.get(manipulator.getClass()).apply(container, manipulator);
     }
 }

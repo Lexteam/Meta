@@ -21,62 +21,67 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package uk.jamierocks.meta.impl.manipulator;
+package uk.jamierocks.meta.api;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
 import uk.jamierocks.meta.api.key.Key;
 import uk.jamierocks.meta.api.manipulator.MetaManipulator;
 import uk.jamierocks.meta.api.value.Value;
+import uk.jamierocks.meta.api.value.ValueHolder;
+import uk.jamierocks.meta.api.value.ValueManager;
 
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
-public abstract class AbstractMeta implements MetaManipulator {
+/**
+ * Represents an object which holds meta.
+ *
+ * @author Jamie Mansfield
+ */
+public interface MetaHolder extends ValueHolder {
 
-    private final Map<Key<?>, Consumer<Object>> keySetterMap = Maps.newHashMap();
-    private final Map<Key<?>, Supplier<?>> keyGetterMap = Maps.newHashMap();
-
-    protected abstract void registerGettersAndSetters();
-
-    protected final void registerGetter(Key<?> key, Supplier<?> function) {
-        this.keyGetterMap.put(Preconditions.checkNotNull(key), Preconditions.checkNotNull(function));
-    }
-
-    protected final <T> void registerSetter(Key<Value<T>> key, Consumer<T> function) {
-        this.keySetterMap.put(Preconditions.checkNotNull(key), Preconditions.checkNotNull((Consumer) function));
+    /**
+     * {@inheritDoc}
+     */
+    default <T> Optional<T> get(Key<Value<T>> key) {
+        return ValueManager.get(this, key);
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public <T> Optional<T> get(Key<Value<T>> key) {
-        if (!supports(key)) {
-            return Optional.empty();
-        }
-        return Optional.of((T) this.keyGetterMap.get(key).get());
+    default <T> boolean supports(Key<Value<T>> key) {
+        return ValueManager.supports(this, key);
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public <T> boolean supports(Key<Value<T>> key) {
-        return this.keySetterMap.containsKey(key);
+    default <T> boolean offer(Key<Value<T>> key, T value) {
+        return ValueManager.offer(this, key, value);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets the requested meta.
+     *
+     * @param clazz the clazz of the required type.
+     * @param <T> the type.
+     * @return the meta.
      */
-    @Override
-    public <T> boolean offer(Key<Value<T>> key, T value) {
-        if (this.supports(key)) {
-            this.keySetterMap.get(key).accept(value);
-            return true;
-        }
-        return false;
+    default <T extends MetaManipulator> T obtainMeta(Class<T> clazz) {
+        return MetaManager.get(this, clazz);
+    }
+
+    /**
+     * Checks to see if this owner supports that meta type.
+     *
+     * @param clazz the clazz of the required type.
+     * @param <T> the type.
+     * @return {@code true} if it supports that meta.
+     */
+    default <T extends MetaManipulator> boolean supportsMeta(Class<T> clazz) {
+        return MetaManager.supports(this, clazz);
+    }
+
+    default <T extends MetaManipulator> boolean applyMeta(T meta) {
+        return MetaManager.apply(this, meta);
     }
 }

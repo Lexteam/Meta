@@ -21,24 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package uk.jamierocks.meta.api.key;
+package uk.jamierocks.meta.impl.manipulator;
 
-import uk.jamierocks.meta.api.MetaQuery;
+import uk.jamierocks.meta.api.MetaContainer;
+import uk.jamierocks.meta.api.key.Key;
 import uk.jamierocks.meta.api.value.Value;
+import uk.jamierocks.meta.impl.LexMetaContainer;
 
-/**
- * Represents a key, this can be of any value.
- *
- * @param <V> the value type.
- */
-public interface Key<V extends Value<?>> {
+public abstract class AbstractSingularMeta<T> extends AbstractMeta {
 
-    /**
-     * Gets the value class.
-     *
-     * @return the value class.
-     */
-    Class<V> getValueClass();
+    private final Key<Value<T>> key;
+    private T value;
 
-    MetaQuery getQuery();
+    public AbstractSingularMeta(Key<Value<T>> key, T value) {
+        this.key = key;
+        this.value = value;
+        this.registerGettersAndSetters();
+    }
+
+    public T getValue() {
+        return this.value;
+    }
+
+    public void setValue(T value) {
+        this.value = value;
+    }
+
+    @Override
+    protected void registerGettersAndSetters() {
+        this.registerGetter(this.key, AbstractSingularMeta.this::getValue);
+        this.registerSetter(this.key, AbstractSingularMeta.this::setValue);
+    }
+
+    @Override
+    public MetaContainer toContainer() {
+        return new LexMetaContainer()
+                .set(this.key.getQuery(), this.value);
+    }
 }

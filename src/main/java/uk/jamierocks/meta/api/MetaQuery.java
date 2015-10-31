@@ -21,24 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package uk.jamierocks.meta.api.key;
-
-import uk.jamierocks.meta.api.MetaQuery;
-import uk.jamierocks.meta.api.value.Value;
+package uk.jamierocks.meta.api;
 
 /**
- * Represents a key, this can be of any value.
+ * Represents a query that can retrieve data from a {@link MetaContainer}.
  *
- * @param <V> the value type.
+ * @author Jamie Mansfield
  */
-public interface Key<V extends Value<?>> {
+public class MetaQuery {
 
-    /**
-     * Gets the value class.
-     *
-     * @return the value class.
-     */
-    Class<V> getValueClass();
+    private final String name;
 
-    MetaQuery getQuery();
+    protected MetaQuery(String name) {
+        this.name = name;
+    }
+
+    public static MetaQuery of(String name) {
+        return new MetaQuery(name);
+    }
+
+    public String getName() {
+        return name;
+    }
 }

@@ -31,9 +31,9 @@ public interface MetaProcessor<M extends MetaManipulator> {
 
     Class<M> getMetaType();
 
-    boolean supports(MetaOwner container);
+    boolean supports(MetaHolder container);
 
-    boolean apply(MetaOwner owner, M manipulator);
+    boolean apply(MetaHolder owner, M manipulator);
 
-    Optional<M> getMetaFromContainer(MetaOwner container);
+    Optional<M> getMetaFromContainer(MetaHolder container);
 }

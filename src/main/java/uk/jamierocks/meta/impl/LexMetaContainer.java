@@ -21,62 +21,74 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package uk.jamierocks.meta.impl.manipulator;
+package uk.jamierocks.meta.impl;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
-import uk.jamierocks.meta.api.key.Key;
-import uk.jamierocks.meta.api.manipulator.MetaManipulator;
-import uk.jamierocks.meta.api.value.Value;
+import uk.jamierocks.meta.api.MetaContainer;
+import uk.jamierocks.meta.api.MetaQuery;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-public abstract class AbstractMeta implements MetaManipulator {
+public class LexMetaContainer implements MetaContainer {
 
-    private final Map<Key<?>, Consumer<Object>> keySetterMap = Maps.newHashMap();
-    private final Map<Key<?>, Supplier<?>> keyGetterMap = Maps.newHashMap();
+    private Map<String, Object> queries = Maps.newHashMap();
 
-    protected abstract void registerGettersAndSetters();
-
-    protected final void registerGetter(Key<?> key, Supplier<?> function) {
-        this.keyGetterMap.put(Preconditions.checkNotNull(key), Preconditions.checkNotNull(function));
-    }
-
-    protected final <T> void registerSetter(Key<Value<T>> key, Consumer<T> function) {
-        this.keySetterMap.put(Preconditions.checkNotNull(key), Preconditions.checkNotNull((Consumer) function));
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<MetaQuery> getQueries() {
+        return this.queries.keySet().stream().map(MetaQuery::of).collect(Collectors.toSet());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> Optional<T> get(Key<Value<T>> key) {
-        if (!supports(key)) {
-            return Optional.empty();
+    public Map<MetaQuery, Object> getValues() {
+        Map<MetaQuery, Object> values = Maps.newHashMap();
+        for (MetaQuery query : this.getQueries()) {
+            values.put(query, this.queries.get(query));
         }
-        return Optional.of((T) this.keyGetterMap.get(key).get());
+        return values;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> boolean supports(Key<Value<T>> key) {
-        return this.keySetterMap.containsKey(key);
+    public boolean contains(MetaQuery query) {
+        return this.queries.containsKey(query.getName());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> boolean offer(Key<Value<T>> key, T value) {
-        if (this.supports(key)) {
-            this.keySetterMap.get(key).accept(value);
-            return true;
+    public Optional<Object> get(MetaQuery query) {
+        if (this.contains(query)) {
+            return Optional.of(this.queries.get(query.getName()));
         }
-        return false;
+        return Optional.empty();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MetaContainer set(MetaQuery query, Object value) {
+        this.queries.put(query.getName(), value);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void remove(MetaQuery query) {
+        this.queries.remove(query.getName());
     }
 }
