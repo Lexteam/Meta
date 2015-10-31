@@ -58,6 +58,12 @@ public interface MetaContainer {
      */
     boolean contains(MetaQuery query);
 
+    /**
+     * Gets the requested data from the given query.
+     *
+     * @param query the given query.
+     * @return an {@link Optional} representation of the requested data.
+     */
     Optional<Object> get(MetaQuery query);
 
     default <T> Optional<T> getType(MetaQuery query, Class<T> type) {
