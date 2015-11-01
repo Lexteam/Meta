@@ -21,24 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package uk.jamierocks.meta.api;
 
-/**
- * Represents a query that can retrieve data from a {@link MetaContainer}.
- *
- * @author Jamie Mansfield
- */
-public class MetaQuery {
+package uk.jamierocks.meta.impl.friend;
 
-    private final String name;
+public class Friend {
 
-    protected MetaQuery(String name) {
-        this.name = name;
-    }
+    static public class Identity { private Identity(){}}
 
-    public static MetaQuery of(String name) {return new MetaQuery(name);}
+    private static final Identity IDENTITY = new Identity();
 
-    public String getName() {
-        return name;
-    }
+    public Identity getIdentity(){return IDENTITY;}
+
 }
