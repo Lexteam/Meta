@@ -32,7 +32,7 @@ public abstract class Friend {
     }
 
     /**
-     * adds a friend to the class
+     * Adds a friend to the class.
      * @param F friend to add
      */
     public void addFriend(Friend F){
@@ -40,7 +40,7 @@ public abstract class Friend {
     }
 
     /**
-     * @param F Friend to check
+     * @param F Friend to check.
      * @returns true if F is a friend to this.
      */
     public boolean isFriend(Friend F){
@@ -49,7 +49,7 @@ public abstract class Friend {
 
 
     /**
-     * @return the identity of the class
+     * @return the identity of the class.
      */
 
     Identity getIdentity(){
