@@ -35,5 +35,7 @@ public interface MetaProcessor<M extends MetaManipulator> {
 
     boolean apply(MetaHolder owner, M manipulator);
 
+    void apply(MetaContainer container, M manipulator);
+
     Optional<M> getMetaFromContainer(MetaHolder container);
 }

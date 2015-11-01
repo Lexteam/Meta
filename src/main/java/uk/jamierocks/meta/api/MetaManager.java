@@ -44,7 +44,11 @@ public class MetaManager {
         return processors.get(key).supports(container);
     }
 
-    public static <T extends MetaManipulator> boolean apply(MetaHolder container, T manipulator) {
-        return processors.get(manipulator.getClass()).apply(container, manipulator);
+    public static <T extends MetaManipulator> boolean apply(MetaHolder holder, T manipulator) {
+        return processors.get(manipulator.getClass()).apply(holder, manipulator);
+    }
+
+    public static <T extends MetaManipulator> void apply(MetaContainer container, T manipulator) {
+        processors.get(manipulator.getClass()).apply(container, manipulator);
     }
 }

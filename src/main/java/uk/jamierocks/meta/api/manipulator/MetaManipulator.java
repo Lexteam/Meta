@@ -25,6 +25,7 @@ package uk.jamierocks.meta.api.manipulator;
 
 import uk.jamierocks.meta.api.MetaContainer;
 import uk.jamierocks.meta.api.MetaHolder;
+import uk.jamierocks.meta.api.MetaManager;
 import uk.jamierocks.meta.api.value.ValueHolder;
 
 /**
@@ -40,4 +41,13 @@ public interface MetaManipulator extends ValueHolder {
      * @return a {@link MetaContainer}.
      */
     MetaContainer toContainer();
+
+    /**
+     * Applies the meta from the given container.
+     *
+     * @param container the given container.
+     */
+    default void applyContainer(MetaContainer container) {
+        MetaManager.apply(container, this);
+    }
 }
