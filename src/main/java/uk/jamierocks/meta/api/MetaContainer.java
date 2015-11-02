@@ -23,7 +23,9 @@
  */
 package uk.jamierocks.meta.api;
 
+import uk.jamierocks.meta.api.key.Key;
 import uk.jamierocks.meta.api.manipulator.MetaManipulator;
+import uk.jamierocks.meta.api.value.Value;
 
 import java.util.Map;
 import java.util.Optional;
@@ -66,6 +68,10 @@ public interface MetaContainer {
      */
     Optional<Object> get(MetaQuery query);
 
+    default <T> Optional<T> get(Key<Value<T>> key) {
+        return (Optional<T>) this.get(key.getQuery());
+    }
+
     default <T> Optional<T> getType(MetaQuery query, Class<T> type) {
         Optional<Object> value = this.get(query);
 
@@ -106,5 +112,13 @@ public interface MetaContainer {
 
     MetaContainer set(MetaQuery query, Object value);
 
+    default <T> MetaContainer set(Key<Value<T>> key, T value) {
+        return this.set(key.getQuery(), value);
+    }
+
     void remove(MetaQuery query);
+
+    default void remove(Key<Value<?>> key) {
+        this.remove(key.getQuery());
+    }
 }

@@ -35,7 +35,6 @@ public abstract class AbstractValueProcessor<E, V extends Value<E>> implements V
         this.key = key;
     }
 
-
     /**
      * {@inheritDoc}
      */
