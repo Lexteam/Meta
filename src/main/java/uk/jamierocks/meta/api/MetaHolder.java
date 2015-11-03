@@ -27,7 +27,7 @@ import uk.jamierocks.meta.api.key.Key;
 import uk.jamierocks.meta.api.manipulator.MetaManipulator;
 import uk.jamierocks.meta.api.value.Value;
 import uk.jamierocks.meta.api.value.ValueHolder;
-import uk.jamierocks.meta.api.value.ValueManager;
+import uk.jamierocks.meta.api.value.ValueRegistry;
 
 import java.util.Optional;
 
@@ -42,21 +42,21 @@ public interface MetaHolder extends ValueHolder {
      * {@inheritDoc}
      */
     default <T> Optional<T> get(Key<Value<T>> key) {
-        return ValueManager.get(this, key);
+        return ValueRegistry.get(this, key);
     }
 
     /**
      * {@inheritDoc}
      */
     default <T> boolean supports(Key<Value<T>> key) {
-        return ValueManager.supports(this, key);
+        return ValueRegistry.supports(this, key);
     }
 
     /**
      * {@inheritDoc}
      */
     default <T> boolean offer(Key<Value<T>> key, T value) {
-        return ValueManager.offer(this, key, value);
+        return ValueRegistry.offer(this, key, value);
     }
 
     /**
@@ -67,7 +67,7 @@ public interface MetaHolder extends ValueHolder {
      * @return the meta.
      */
     default <T extends MetaManipulator> T obtainMeta(Class<T> clazz) {
-        return MetaManager.get(this, clazz);
+        return MetaRegistry.get(this, clazz);
     }
 
     /**
@@ -78,10 +78,10 @@ public interface MetaHolder extends ValueHolder {
      * @return {@code true} if it supports that meta.
      */
     default <T extends MetaManipulator> boolean supportsMeta(Class<T> clazz) {
-        return MetaManager.supports(this, clazz);
+        return MetaRegistry.supports(this, clazz);
     }
 
     default <T extends MetaManipulator> boolean applyMeta(T meta) {
-        return MetaManager.apply(this, meta);
+        return MetaRegistry.apply(this, meta);
     }
 }

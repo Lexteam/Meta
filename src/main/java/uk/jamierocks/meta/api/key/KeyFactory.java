@@ -26,7 +26,12 @@ package uk.jamierocks.meta.api.key;
 import uk.jamierocks.meta.api.MetaQuery;
 import uk.jamierocks.meta.api.value.Value;
 
-public final class KeyHelper {
+/**
+ * Factory for manufacturing keys.
+ *
+ * @author Jamie Mansfield
+ */
+public final class KeyFactory {
 
     public static <E, V extends Value<E>> Key<V> makeSingleKey(final Class valueClass, final MetaQuery metaQuery) {
         return new Key<V>() {

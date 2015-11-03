@@ -28,7 +28,7 @@ import uk.jamierocks.meta.api.manipulator.MetaManipulator;
 
 import java.util.Map;
 
-public class MetaManager {
+public final class MetaRegistry {
 
     private static Map<Class<?>, MetaProcessor> processors = Maps.newHashMap();
 

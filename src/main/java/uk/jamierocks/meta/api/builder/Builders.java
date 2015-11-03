@@ -21,33 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package uk.jamierocks.meta.api.manipulator;
+package uk.jamierocks.meta.api.builder;
 
-import uk.jamierocks.meta.api.MetaContainer;
-import uk.jamierocks.meta.api.MetaHolder;
-import uk.jamierocks.meta.api.MetaRegistry;
-import uk.jamierocks.meta.api.value.ValueHolder;
+import com.google.common.collect.Maps;
+import uk.jamierocks.meta.api.manipulator.MetaManipulator;
+
+import java.util.Map;
+import java.util.Optional;
 
 /**
- * Represents meta a {@link MetaHolder} can hold.
+ * Static access to builders.
  *
  * @author Jamie Mansfield
  */
-public interface MetaManipulator extends ValueHolder {
+public final class Builders {
+
+    private static final Map<Class, MetaManipulatorBuilder> builders = Maps.newHashMap();
+
+    public static void registerBuilder(MetaManipulatorBuilder builder) {
+        builders.put(builder.getType(), builder);
+    }
 
     /**
-     * Gets a {@link MetaContainer} representation of this manipulator.
+     * Gets the manipulator builder for said type.
      *
-     * @return a {@link MetaContainer}.
+     * @param type the type.
+     * @param <T> the type also.
+     * @return the builder, as an {@link Optional}.
      */
-    MetaContainer toContainer();
-
-    /**
-     * Applies the meta from the given container.
-     *
-     * @param container the given container.
-     */
-    default void applyContainer(MetaContainer container) {
-        MetaRegistry.apply(container, this);
+    public static <T extends MetaManipulator> Optional<MetaManipulatorBuilder<T>> getBuilder(Class<T> type) {
+        if (builders.containsKey(type)) {
+            return Optional.of(builders.get(type));
+        }
+        return Optional.empty();
     }
 }

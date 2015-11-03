@@ -30,7 +30,7 @@ import uk.jamierocks.meta.api.key.Key;
 import java.util.Map;
 import java.util.Optional;
 
-public class ValueManager {
+public final class ValueRegistry {
 
     private static Map<Key, ValueProcessor> processors = Maps.newHashMap();
 
