@@ -60,13 +60,13 @@ public interface MetaHolder extends ValueHolder {
     }
 
     /**
-     * Gets the requested meta.
+     * Obtains the requested meta.
      *
      * @param clazz the clazz of the required type.
      * @param <T> the type.
      * @return the meta.
      */
-    default <T extends MetaManipulator> T obtainMeta(Class<T> clazz) {
+    default <T extends MetaManipulator> T obtain(Class<T> clazz) {
         return MetaRegistry.get(this, clazz);
     }
 
@@ -77,11 +77,11 @@ public interface MetaHolder extends ValueHolder {
      * @param <T> the type.
      * @return {@code true} if it supports that meta.
      */
-    default <T extends MetaManipulator> boolean supportsMeta(Class<T> clazz) {
+    default <T extends MetaManipulator> boolean supports(Class<T> clazz) {
         return MetaRegistry.supports(this, clazz);
     }
 
-    default <T extends MetaManipulator> boolean applyMeta(T meta) {
+    default <T extends MetaManipulator> boolean apply(T meta) {
         return MetaRegistry.apply(this, meta);
     }
 }
