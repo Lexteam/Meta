@@ -28,7 +28,7 @@ import uk.jamierocks.meta.api.value.Value;
 
 public abstract class KeysBase {
 
-    public <E, V extends Value<E>> Key<V> makeSingleKey(final Class valueClass, final MetaQuery metaQuery) {
+    public static <E, V extends Value<E>> Key<V> makeSingleKey(final Class valueClass, final MetaQuery metaQuery) {
         return KeyFactory.<E, V>makeSingleKey(valueClass, metaQuery);
     }
 }
