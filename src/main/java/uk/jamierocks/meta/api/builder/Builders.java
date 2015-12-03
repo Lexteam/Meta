@@ -39,7 +39,7 @@ public final class Builders {
     private static final Map<Class, MetaManipulatorBuilder> builders = Maps.newHashMap();
 
     public static void registerBuilder(MetaManipulatorBuilder builder) {
-        builders.put(builder.getType(), builder);
+        Builders.builders.put(builder.getType(), builder);
     }
 
     /**
@@ -50,8 +50,8 @@ public final class Builders {
      * @return the builder, as an {@link Optional}.
      */
     public static <T extends MetaManipulator> Optional<MetaManipulatorBuilder<T>> getBuilder(Class<T> type) {
-        if (builders.containsKey(type)) {
-            return Optional.of(builders.get(type));
+        if (Builders.builders.containsKey(type)) {
+            return Optional.of(Builders.builders.get(type));
         }
         return Optional.empty();
     }

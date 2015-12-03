@@ -25,7 +25,7 @@ package uk.jamierocks.meta.api;
 
 public abstract class QueriesBase {
 
-    public static MetaQuery of(String name) {
+    protected static MetaQuery of(String name) {
         return MetaQuery.of(name);
     }
 }
