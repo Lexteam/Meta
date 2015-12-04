@@ -38,15 +38,15 @@ public final class ValueRegistry {
         processors.put(processor.getKey(), processor);
     }
 
-    public static <T> Optional<T> get(MetaHolder container, Key<Value<T>> key) {
+    public static <T> Optional<T> get(ValueHolder container, Key<Value<T>> key) {
         return processors.get(key).getValueFromContainer(container);
     }
 
-    public static <T> boolean supports(MetaHolder container, Key<Value<T>> key) {
+    public static <T> boolean supports(ValueHolder container, Key<Value<T>> key) {
         return processors.get(key).supports(container);
     }
 
-    public static <T> boolean offer(MetaHolder container, Key<Value<T>> key, T value) {
+    public static <T> boolean offer(ValueHolder container, Key<Value<T>> key, T value) {
         return processors.get(key).offer(container, value);
     }
 }

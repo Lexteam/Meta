@@ -23,7 +23,6 @@
  */
 package uk.jamierocks.meta.api.value;
 
-import uk.jamierocks.meta.api.MetaHolder;
 import uk.jamierocks.meta.api.key.Key;
 
 import java.util.Optional;
@@ -32,10 +31,10 @@ public interface ValueProcessor<E, V extends Value<E>> {
 
     Key<? extends Value<E>> getKey();
 
-    boolean supports(MetaHolder container);
+    boolean supports(ValueHolder container);
 
-    boolean offer(MetaHolder container, E value);
+    boolean offer(ValueHolder container, E value);
 
-    Optional<E> getValueFromContainer(MetaHolder container);
+    Optional<E> getValueFromContainer(ValueHolder container);
 }
 
