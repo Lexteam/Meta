@@ -1,36 +1,29 @@
-buildscript {
-    repositories {
-        maven {
-            url 'https://plugins.gradle.org/m2/'
-        }
-    }
-    dependencies {
-        classpath 'gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin:0.12.1'
-    }
-}
-
 plugins {
     id 'java'
+    id 'maven'
 
-    id 'eclipse'
     id 'idea'
+    id 'eclipse'
+
+    id 'com.github.hierynomus.license' version '0.12.1'
 }
-apply plugin: 'com.github.hierynomus.license'
+
+defaultTasks 'clean', 'licenseFormat'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-group = 'uk.jamierocks'
-version = '1.0-SNAPSHOT'
-description = "Meta API - like Sponge's Data API."
+group = 'xyz.lexteam'
+version = '1.0.0-SNAPSHOT'
+description = "Meta - like Sponge's Data API."
+ext.url = 'http://www.lexteam.xyz/'
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
-    compile 'com.google.guava:guava:18.0'
+    compile 'com.google.guava:guava:19.0'
 }
 
 license {
@@ -44,6 +37,74 @@ license {
     }
 }
 
+task javadocJar(type: Jar, dependsOn: 'javadoc') {
+    from javadoc.destinationDir
+    classifier = 'javadoc'
+}
+
+task sourcesJar(type: Jar, dependsOn: 'classes') {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            // Lexteam Maven Repository
+            repository(url: 'http://lex1.lexteam.xyz:8888/repository/internal/') {
+                authentication(userName: lexRepoUser, password: lexRepoPass)
+            }
+
+            snapshotRepository(url: 'http://lex1.lexteam.xyz:8888/repository/snapshots/') {
+                authentication(userName: lexRepoUser, password: lexRepoPass)
+            }
+
+            pom {
+                artifactId = project.archivesBaseName.toLowerCase()
+
+                project {
+                    name = project.archivesBaseName
+                    description = project.description
+                    packaging = 'jar'
+                    url = project.url
+
+                    scm {
+                        url = 'https://github.com/Lexteam/Meta'
+                        connection = 'scm:git:https://github.com/Lexteam/Meta.git'
+                        developerConnection = 'scm:git:git@github.com:Lexteam/Meta.git'
+                    }
+
+                    issueManagement {
+                        system = 'GitHub'
+                        url = 'https://github.com/Lexteam/Meta/issues'
+                    }
+
+                    licenses {
+                        license {
+                            name = 'MIT License'
+                            url = 'http://opensource.org/licenses/MIT'
+                            distribution = 'repo'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'jamierocks'
+                            name 'Jamie Mansfield'
+                            email 'dev@jamierocks.uk'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.9'
+    gradleVersion = '2.11'
 }
